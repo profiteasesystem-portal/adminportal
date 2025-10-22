@@ -276,6 +276,7 @@
                   =================================
                   PAGE: Add Investor
                   =================================
+                  [MODIFIED] This section has been updated.
                 -->
                 <section id="page-add-investor" class="page-content hidden">
                     <h2 class="text-3xl font-bold text-gray-800 mb-6">Create New Investor Profile</h2>
@@ -284,29 +285,53 @@
                         <form id="add-investor-form">
                             <!-- Full Name -->
                             <div class="mb-4">
-                                <label for="investor-name" class="block text-sm font-medium text-gray-700 mb-1">Full Name</label>
-                                <input type="text" id="investor-name" required
+                                <label for="investorName" class="block text-sm font-medium text-gray-700 mb-1">Full Name</label>
+                                <input type="text" id="investorName" name="investorName" required
                                     class="w-full px-4 py-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-green-600 focus:border-transparent"
                                     placeholder="John Doe">
                             </div>
                             
                             <!-- Email -->
                             <div class="mb-4">
-                                <label for="investor-email" class="block text-sm font-medium text-gray-700 mb-1">Email Address</label>
-                                <input type="email" id="investor-email" required
+                                <label for="investorEmail" class="block text-sm font-medium text-gray-700 mb-1">Email Address</label>
+                                <input type="email" id="investorEmail" name="investorEmail" required
                                     class="w-full px-4 py-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-green-600 focus:border-transparent"
                                     placeholder="john.doe@example.com">
-                                <p class="text-xs text-gray-500 mt-1">This email will be used by the investor to log in to their client portal.</p>
+                                <p class="text-xs text-gray-500 mt-1">This will be the investor's login email.</p>
+                            </div>
+
+                            <!-- Password -->
+                            <div class="mb-4">
+                                <label for="investorPassword" class="block text-sm font-medium text-gray-700 mb-1">Password</label>
+                                <input type="password" id="investorPassword" name="investorPassword" required
+                                    class="w-full px-4 py-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-green-600 focus:border-transparent"
+                                    placeholder="&bull;&bull;&bull;&bull;&bull;&bull;&bull;&bull;">
+                                <p class="text-xs text-gray-500 mt-1">Investor will use this to log in. Min. 6 characters.</p>
                             </div>
                             
-                            <!-- Initial Investment -->
-                            <div class="mb-6">
-                                <label for="investor-investment" class="block text-sm font-medium text-gray-700 mb-1">Initial Investment Amount</label>
-                                <div class="relative">
-                                    <span class="absolute inset-y-0 left-0 pl-3 flex items-center text-gray-500">$</span>
-                                    <input type="number" id="investor-investment" min="0" step="100" required
-                                        class="w-full pl-7 pr-4 py-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-green-600 focus:border-transparent"
-                                        placeholder="5000">
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
+                                <!-- Initial Investment -->
+                                <div>
+                                    <label for="initialAmount" class="block text-sm font-medium text-gray-700 mb-1">Initial Investment</label>
+                                    <div class="relative">
+                                        <span class="absolute inset-y-0 left-0 pl-3 flex items-center text-gray-500">$</span>
+                                        <input type="number" id="initialAmount" name="initialAmount" min="0" step="100" required
+                                            class="w-full pl-7 pr-4 py-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-green-600 focus:border-transparent"
+                                            placeholder="5000">
+                                    </div>
+                                </div>
+                                
+                                <!-- Investment Status -->
+                                <div>
+                                    <label for="investmentStatus" class="block text-sm font-medium text-gray-700 mb-1">Status</label>
+                                    <select id="investmentStatus" name="investmentStatus" required
+                                            class="w-full px-4 py-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-green-600 focus:border-transparent bg-white h-[42px]">
+                                        <option value="Funds Available">Funds Available</option>
+                                        <option value="On Hold">On Hold</option>
+                                        <option value="Pending">Pending</option>
+                                        <option value="Processing">Processing</option>
+                                        <option value="Deposited">Deposited</option>
+                                    </select>
                                 </div>
                             </div>
                             
@@ -323,6 +348,7 @@
                   =================================
                   PAGE: Manage Investors
                   =================================
+                  [MODIFIED] Added 'Status' column.
                 -->
                 <section id="page-manage-investors" class="page-content hidden">
                     <h2 class="text-3xl font-bold text-gray-800 mb-6">Manage Investors</h2>
@@ -334,6 +360,7 @@
                                     <tr class="bg-gray-100 border-b border-gray-300">
                                         <th class="py-3 px-4 text-sm font-semibold text-gray-600 uppercase">Name</th>
                                         <th class="py-3 px-4 text-sm font-semibold text-gray-600 uppercase">Email</th>
+                                        <th class="py-3 px-4 text-sm font-semibold text-gray-600 uppercase">Status</th>
                                         <th class="py-3 px-4 text-sm font-semibold text-gray-600 uppercase">Current Balance</th>
                                         <th class="py-3 px-4 text-sm font-semibold text-gray-600 uppercase">Total Funded</th>
                                         <th class="py-3 px-4 text-sm font-semibold text-gray-600 uppercase">Total ROI</th>
@@ -343,7 +370,8 @@
                                 <tbody id="manage-investors-table-body" class="divide-y divide-gray-200">
                                     <!-- Rows will be injected by JS -->
                                     <tr>
-                                        <td colspan="6" class="py-6 px-4 text-center text-gray-500">Loading investor data...</td>
+                                        <!-- [MODIFIED] Colspan updated to 7 -->
+                                        <td colspan="7" class="py-6 px-4 text-center text-gray-500">Loading investor data...</td>
                                     </tr>
                                 </tbody>
                             </table>
@@ -489,6 +517,7 @@
       =================================
       FIREBASE SDK & APP LOGIC
       =================================
+      [MODIFIED] Imports and logic updated.
     -->
         <script type="module">
         // Firebase SDK Imports (v9 Modular)
@@ -497,7 +526,8 @@
             getAuth, 
             onAuthStateChanged, 
             signInWithEmailAndPassword, 
-            signOut 
+            signOut,
+            createUserWithEmailAndPassword // [ADDED] For new investor auth
         } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
         import { 
             getFirestore, 
@@ -512,6 +542,7 @@
             Timestamp, 
             writeBatch,
             serverTimestamp,
+            increment, // [ADDED] For race-condition-safe updates
             setLogLevel
         } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
 
@@ -519,13 +550,13 @@
         // PASTE YOUR FIREBASE CONFIG OBJECT HERE
         // You get this from the Firebase Console when you add a Web App.
         const firebaseConfig = {
-          apiKey: "AIzaSyDIO90MHmuV-LMDbIGeFTTl8gERtywmrcw",
-          authDomain: "profitease-9ac10.firebaseapp.com",
-          projectId: "profitease-9ac10",
-          storageBucket: "profitease-9ac10.firebasestorage.app",
-          messagingSenderId: "675034886547",
-          appId: "1:675034886547:web:a84da3093f10fbc0d9b866",
-          measurementId: "G-155NLSPN9Z"
+          apiKey: "AIzaSyDIO90MHmuV-LMDbIGeFTTl8gERtywmrcw",
+          authDomain: "profitease-9ac10.firebaseapp.com",
+          projectId: "profitease-9ac10",
+          storageBucket: "profitease-9ac10.firebasestorage.app",
+          messagingSenderId: "675034886547",
+          appId: "1:675034886547:web:a84da3093f10fbc0d9b866",
+          measurementId: "G-155NLSPN9Z"
         };
         
         // --- IMPORTANT: App ID ---
@@ -777,9 +808,6 @@
             const password = loginForm.password.value;
             
             // FIX: Handle the "Fesh641" username alias.
-            // Firebase signIn requires a valid email. We'll assume "Fesh641" is an
-            // alias for the admin email, which we can guess from the placeholder.
-            // If the input isn't "Fesh641", we'll assume the user typed a valid email.
             const emailToLogin = (usernameInput === 'Fesh641') ? 'admin@profitease.com' : usernameInput;
 
             try {
@@ -915,12 +943,30 @@
         };
         
         /**
-         * Renders the full table on the "Manage Investors" page.
+         * [MODIFIED] Renders the full table on the "Manage Investors" page.
+         * Now includes the 'investmentStatus' column.
          */
         const renderManageInvestorsTable = () => {
+            
+            // Helper function for styling the status badge
+            const getStatusBadge = (status) => {
+                status = status || 'Pending'; // Default
+                let classes = 'px-2 py-1 text-xs font-medium rounded-full ';
+                switch (status) {
+                    case 'Funds Available': classes += 'bg-green-100 text-green-800'; break;
+                    case 'Deposited': classes += 'bg-blue-100 text-blue-800'; break;
+                    case 'Processing': classes += 'bg-yellow-100 text-yellow-800'; break;
+                    case 'On Hold': classes += 'bg-red-100 text-red-800'; break;
+                    case 'Pending':
+                    default:
+                        classes += 'bg-gray-100 text-gray-800'; break;
+                }
+                return `<span class="${classes}">${status}</span>`;
+            };
+            
             if (allInvestors.length === 0) {
                 manageInvestorsTableBody.innerHTML = `
-                    <tr><td colspan="6" class="py-6 px-4 text-center text-gray-500">No investors found. Add one to get started!</td></tr>
+                    <tr><td colspan="7" class="py-6 px-4 text-center text-gray-500">No investors found. Add one to get started!</td></tr>
                 `;
                 return;
             }
@@ -929,6 +975,7 @@
                 <tr class="hover:bg-gray-50">
                     <td class="py-4 px-4 text-sm font-medium text-gray-900">${user.fullName}</td>
                     <td class="py-4 px-4 text-sm text-gray-600">${user.email}</td>
+                    <td class="py-4 px-4 text-sm text-gray-600">${getStatusBadge(user.investmentStatus)}</td>
                     <td class="py-4 px-4 text-sm font-bold text-green-700">${formatCurrency(user.currentBalance)}</td>
                     <td class="py-4 px-4 text-sm text-gray-600">${formatCurrency(user.totalFunded)}</td>
                     <td class="py-4 px-4 text-sm text-gray-600">${formatCurrency(user.totalROI)}</td>
@@ -1002,6 +1049,7 @@
                         <span class="px-2 py-1 text-xs font-medium rounded-full ${
                             tx.type === 'ROI' ? 'bg-blue-100 text-blue-800' : 
                             tx.type === 'Funding' ? 'bg-green-100 text-green-800' : 
+                            tx.type === 'Initial' ? 'bg-yellow-100 text-yellow-800' :
                             'bg-gray-100 text-gray-800'
                         }">
                             ${tx.type}
@@ -1017,66 +1065,105 @@
         // --- Firestore Write Functions ---
 
         /**
-         * Handles the "Add Investor" form submission.
-         * Creates a new user doc and an initial transaction doc.
+         * [MODIFIED] Handles the "Add Investor" form submission.
+         * Creates a new user in Firebase Auth, then creates their
+         * profile and initial transaction in Firestore.
          */
         const handleAddInvestor = async (e) => {
             e.preventDefault();
             setButtonLoading(addInvestorButton, "Creating Account...");
 
-            const name = addInvestorForm['investor-name'].value;
-            const email = addInvestorForm['investor-email'].value;
-            const initialInvestment = parseFloat(addInvestorForm['investor-investment'].value);
+            // Get form data using the new IDs
+            const name = addInvestorForm['investorName'].value;
+            const email = addInvestorForm['investorEmail'].value;
+            const password = addInvestorForm['investorPassword'].value;
+            const initialInvestment = parseFloat(addInvestorForm['initialAmount'].value);
+            const status = addInvestorForm['investmentStatus'].value;
 
+            // Validation
+            if (!name || !email || !password) {
+                showAlert("Please fill out all fields.", "error");
+                resetButton(addInvestorButton);
+                return;
+            }
             if (isNaN(initialInvestment) || initialInvestment < 0) {
                 showAlert("Invalid investment amount.", "error");
                 resetButton(addInvestorButton);
                 return;
             }
+             if (password.length < 6) {
+                 showAlert("Password must be at least 6 characters long.", "error");
+                resetButton(addInvestorButton);
+                return;
+            }
+
+            let newAuthUser = null;
 
             try {
-                // Use a write batch to create user and initial transaction atomically
+                // 1. Create the user in Firebase Authentication
+                const userCredential = await createUserWithEmailAndPassword(auth, email, password);
+                newAuthUser = userCredential.user;
+                const newAuthUid = newAuthUser.uid;
+
+                // 2. Create the user doc and transaction doc in Firestore
+                // We use the *existing* app's database structure to "integrate seamlessly"
                 const batch = writeBatch(db);
                 
-                // 1. Create the new user doc
+                // 2a. Create the new user doc
                 const usersCol = collection(db, 'artifacts', appId, 'public/data/users');
-                const newUserRef = doc(usersCol); // Generate a new doc ID
+                const newUserRef = doc(usersCol); // Auto-generate Firestore doc ID
                 
                 const newUserData = {
-                    uid: newUserRef.id, // Save the doc ID as the uid
+                    // This is the Firestore doc ID, used by the existing app as the 'key'
+                    uid: newUserRef.id, 
+                    // This is the *new* Firebase Authentication UID
+                    authUid: newAuthUid, 
                     fullName: name,
                     email: email,
                     currentBalance: initialInvestment,
                     totalFunded: initialInvestment,
                     totalROI: 0,
-                    createdAt: serverTimestamp() // Use server timestamp
+                    // Add the new status field from the prompt
+                    investmentStatus: status, 
+                    createdAt: serverTimestamp()
                 };
                 batch.set(newUserRef, newUserData);
 
-                // 2. Create the initial transaction doc
+                // 2b. Create the initial transaction doc
                 const txCol = collection(db, 'artifacts', appId, 'public/data/transactions');
-                const newTxRef = doc(txCol); // Generate new tx ID
+                const newTxRef = doc(txCol); // Auto-generate tx ID
                 
+                // Use the specific description from the prompt
+                const txDescription = `Account created and funded with ${formatCurrency(initialInvestment)} by admin. Status: ${status}.`;
+
                 const newTxData = {
-                    userId: newUserRef.id,
+                    userId: newUserRef.id, // Link to the Firestore doc ID
                     userName: name,
                     date: serverTimestamp(),
-                    description: "Initial investment by admin setup",
+                    description: txDescription,
                     amount: initialInvestment,
-                    type: "Initial"
+                    type: "Initial" // Use existing app's type
                 };
                 batch.set(newTxRef, newTxData);
                 
-                // 3. Commit the batch
+                // 3. Commit the Firestore batch
                 await batch.commit();
                 
-                showAlert("Investor account created successfully!", "success");
+                showAlert("Investor Added Successfully.", "success");
                 addInvestorForm.reset();
                 showPage('page-manage-investors'); // Switch to manage page
 
             } catch (error) {
                 console.error("Error creating investor:", error);
-                showAlert(`Failed to create investor: ${error.message}`, "error");
+
+                if (newAuthUser) {
+                    // If Firestore write failed, the Auth user is an "orphan"
+                    console.warn(`Orphan Auth user created: ${email} (${newAuthUser.uid}). Firestore write failed.`);
+                    showAlert(`Error: ${error.message}. Auth user was created but profile failed. Please delete user from Firebase Auth console.`, "error");
+                } else {
+                    // Auth creation itself failed (e.g., email-already-in-use)
+                    showAlert(`Error creating investor: ${error.message}`, "error");
+                }
             } finally {
                 resetButton(addInvestorButton);
             }
@@ -1118,7 +1205,8 @@
         };
 
         /**
-         * Handles the "Add Funds" modal form submission.
+         * [MODIFIED] Handles the "Add Funds" modal form submission.
+         * Uses atomic 'increment' operation.
          */
         const handleAddFunds = async (e) => {
             e.preventDefault();
@@ -1136,13 +1224,11 @@
             try {
                 const batch = writeBatch(db);
                 
-                // 1. Update user document
+                // 1. Update user document atomically
                 const userDocRef = doc(db, 'artifacts', appId, 'public/data/users', selectedInvestor.id);
-                const newBalance = selectedInvestor.currentBalance + amount;
-                const newTotalFunded = selectedInvestor.totalFunded + amount;
                 batch.update(userDocRef, {
-                    currentBalance: newBalance,
-                    totalFunded: newTotalFunded
+                    currentBalance: increment(amount),
+                    totalFunded: increment(amount)
                 });
                 
                 // 2. Create transaction log
@@ -1172,7 +1258,8 @@
         };
 
         /**
-         * Handles the "Add ROI" modal form submission.
+         * [MODIFIED] Handles the "Add ROI" modal form submission.
+         * Uses atomic 'increment' operation.
          */
         const handleAddRoi = async (e) => {
             e.preventDefault();
@@ -1190,13 +1277,11 @@
             try {
                 const batch = writeBatch(db);
                 
-                // 1. Update user document
+                // 1. Update user document atomically
                 const userDocRef = doc(db, 'artifacts', appId, 'public/data/users', selectedInvestor.id);
-                const newBalance = selectedInvestor.currentBalance + amount;
-                const newTotalROI = selectedInvestor.totalROI + amount;
                 batch.update(userDocRef, {
-                    currentBalance: newBalance,
-                    totalROI: newTotalROI
+                    currentBalance: increment(amount),
+                    totalROI: increment(amount)
                 });
                 
                 // 2. Create transaction log
@@ -1266,9 +1351,3 @@
     </script>
 </body>
 </html>
-
-
-
-
-
-
