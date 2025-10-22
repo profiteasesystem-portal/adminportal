@@ -1,0 +1,1274 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Profit Ease - Admin Dashboard</title>
+    
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Inter Font -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- Custom Styles -->
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f3f4f6; /* Tailwind gray-100 */
+        }
+        
+        /* Brand Colors */
+        :root {
+            --brand-green: #15803d; /* Tailwind green-700 */
+            --brand-gold: #ca8a04; /* Tailwind yellow-600 */
+        }
+        
+        /* Sidebar active link */
+        .sidebar-link.active {
+            background-color: var(--brand-green);
+            color: white;
+        }
+        
+        /* Custom Button Styles */
+        .btn-primary {
+            background-color: var(--brand-green);
+            color: white;
+            transition: background-color 0.3s ease;
+        }
+        .btn-primary:hover {
+            background-color: #16a34a; /* Tailwind green-600 */
+        }
+        
+        .btn-secondary {
+            background-color: #eab308; /* Tailwind yellow-500 */
+            color: white;
+            transition: background-color 0.3s ease;
+        }
+        .btn-secondary:hover {
+            background-color: var(--brand-gold);
+        }
+        
+        .btn-danger {
+            background-color: #dc2626; /* Tailwind red-600 */
+            color: white;
+            transition: background-color 0.3s ease;
+        }
+        .btn-danger:hover {
+            background-color: #b91c1c; /* Tailwind red-700 */
+        }
+
+        /* Hide scrollbar for aesthetics */
+        .no-scrollbar::-webkit-scrollbar {
+            display: none;
+        }
+        .no-scrollbar {
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+        }
+    </style>
+</head>
+<body class="antialiased">
+
+    <!-- 
+      =================================
+      LOGIN CONTAINER
+      =================================
+      Visible by default. Hidden when auth state is 'loggedIn'.
+    -->
+    <div id="login-container" class="flex min-h-screen items-center justify-center bg-gray-900 p-4">
+        <div class="w-full max-w-md">
+            <form id="login-form" class="bg-white p-8 rounded-2xl shadow-2xl">
+                <div class="flex flex-col items-center mb-6">
+                    <!-- Icon -->
+                    <svg class="h-16 w-16 text-green-700" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M2.25 18.75a60.07 60.07 0 0 1 15.797 2.101c.727.198 1.453-.342 1.453-1.096V18.75M3.75 4.5v.75A.75.75 0 0 1 3 6h-.75m0 0v-.375c0-.621.504-1.125 1.125-1.125H20.25M2.25 6v9m18-10.5v.75c0 .414.336.75.75.75h.75m-1.5-1.5h.375c.621 0 1.125.504 1.125 1.125v9.75c0 .621-.504 1.125-1.125 1.125h-.375m1.5-1.5H21a.75.75 0 0 0-.75.75v.75m0 0H3.75m0 0h-.375a1.125 1.125 0 0 1-1.125-1.125V6.375c0-.621.504-1.125 1.125-1.125h.375m16.5 0h.375c.621 0 1.125.504 1.125 1.125v9.75c0 .621-.504 1.125-1.125 1.125h-.375m-1.5-1.5v.375c0 .621.504 1.125 1.125 1.125h.375a1.125 1.125 0 0 0 1.125-1.125V6.375a1.125 1.125 0 0 0-1.125-1.125h-.375m-1.5-1.5v-.75a.75.75 0 0 0-.75-.75h-.75" />
+                    </svg>
+                    <h1 class="text-3xl font-bold text-gray-800 mt-2">Profit Ease</h1>
+                    <p class="text-lg font-medium text-gray-600">Admin Control Panel</p>
+                </div>
+                
+                <!-- Email -->
+                <div class="mb-4">
+                    <label for="login-username" class="block text-sm font-medium text-gray-700 mb-1">Username</label>
+                    <input type="text" id="login-username" name="username" required
+                        class="w-full px-4 py-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-green-600 focus:border-transparent"
+                        placeholder="admin@profitease.com">
+                </div>
+                
+                <!-- Password -->
+                <div class="mb-6">
+                    <label for="login-password" class="block text-sm font-medium text-gray-700 mb-1">Password</label>
+                    <input type="password" id="login-password" name="password" required
+                        class="w-full px-4 py-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-green-600 focus:border-transparent"
+                        placeholder="&bull;&bull;&bull;&bull;&bull;&bull;&bull;&bull;">
+                </div>
+                
+                <!-- Login Button -->
+                <button type="submit" id="login-button"
+                    class="w-full btn-primary font-bold py-3 px-4 rounded-lg shadow-lg transform transition-transform hover:scale-105 focus:outline-none focus:ring-4 focus:ring-green-300 disabled:opacity-50">
+                    Secure Login
+                </button>
+            </form>
+        </div>
+    </div>
+    
+    <!-- 
+      =================================
+      ADMIN DASHBOARD CONTAINER
+      =================================
+      Hidden by default. Visible when auth state is 'loggedIn'.
+    -->
+    <div id="admin-container" class="hidden">
+        
+        <!-- Sidebar -->
+        <nav id="sidebar" class="fixed top-0 left-0 h-full w-64 bg-gray-800 text-gray-300 transform -translate-x-full md:translate-x-0 transition-transform duration-300 ease-in-out z-30 flex flex-col">
+            <!-- Logo -->
+            <div class="flex items-center justify-center px-6 py-6 border-b border-gray-700">
+                <svg class="h-10 w-10 text-yellow-500" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M2.25 18.75a60.07 60.07 0 0 1 15.797 2.101c.727.198 1.453-.342 1.453-1.096V18.75M3.75 4.5v.75A.75.75 0 0 1 3 6h-.75m0 0v-.375c0-.621.504-1.125 1.125-1.125H20.25M2.25 6v9m18-10.5v.75c0 .414.336.75.75.75h.75m-1.5-1.5h.375c.621 0 1.125.504 1.125 1.125v9.75c0 .621-.504 1.125-1.125 1.125h-.375m1.5-1.5H21a.75.75 0 0 0-.75.75v.75m0 0H3.75m0 0h-.375a1.125 1.125 0 0 1-1.125-1.125V6.375c0-.621.504-1.125 1.125-1.125h.375m16.5 0h.375c.621 0 1.125.504 1.125 1.125v9.75c0 .621-.504 1.125-1.125 1.125h-.375m-1.5-1.5v.375c0 .621.504 1.125 1.125 1.125h.375a1.125 1.125 0 0 0 1.125-1.125V6.375a1.125 1.125 0 0 0-1.125-1.125h-.375m-1.5-1.5v-.75a.75.75 0 0 0-.75-.75h-.75" />
+                </svg>
+                <span class="text-white text-2xl font-bold ml-3">Profit Ease</span>
+            </div>
+            
+            <!-- Nav Links -->
+            <div class="flex-grow overflow-y-auto no-scrollbar">
+                <ul class="flex flex-col py-4 space-y-1">
+                    <li>
+                        <a href="#" data-page="page-dashboard" class="sidebar-link active relative flex flex-row items-center h-11 focus:outline-none hover:bg-gray-700 text-white-600 hover:text-white-800 border-l-4 border-transparent hover:border-green-500 pr-6">
+                            <span class="inline-flex justify-center items-center ml-4">
+                                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zM14 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zM14 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z"></path></svg>
+                            </span>
+                            <span class="ml-2 text-sm tracking-wide">Dashboard</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#" data-page="page-add-investor" class="sidebar-link relative flex flex-row items-center h-11 focus:outline-none hover:bg-gray-700 text-white-600 hover:text-white-800 border-l-4 border-transparent hover:border-green-500 pr-6">
+                            <span class="inline-flex justify-center items-center ml-4">
+                                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M18 9v3m0 0v3m0-3h3m-3 0h-3m-2-5a4 4 0 11-8 0 4 4 0 018 0zM3 20a6 6 0 0112 0v1H3v-1z"></path></svg>
+                            </span>
+                            <span class="ml-2 text-sm tracking-wide">Add Investor</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#" data-page="page-manage-investors" class="sidebar-link relative flex flex-row items-center h-11 focus:outline-none hover:bg-gray-700 text-white-600 hover:text-white-800 border-l-4 border-transparent hover:border-green-500 pr-6">
+                            <span class="inline-flex justify-center items-center ml-4">
+                                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z"></path></svg>
+                            </span>
+                            <span class="ml-2 text-sm tracking-wide">Manage Investors</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#" data-page="page-transactions" class="sidebar-link relative flex flex-row items-center h-11 focus:outline-none hover:bg-gray-700 text-white-600 hover:text-white-800 border-l-4 border-transparent hover:border-green-500 pr-6">
+                            <span class="inline-flex justify-center items-center ml-4">
+                                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path></svg>
+                            </span>
+                            <span class="ml-2 text-sm tracking-wide">Transactions / Logs</span>
+                        </a>
+                    </li>
+                </ul>
+            </div>
+
+            <!-- Logout -->
+            <div class="px-6 py-4 border-t border-gray-700">
+                <button id="logout-button" class="w-full text-left flex items-center px-3 py-2 rounded-lg hover:bg-red-700 hover:text-white transition-colors duration-200">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"></path></svg>
+                    <span class="ml-2 text-sm tracking-wide">Log Out</span>
+                </button>
+            </div>
+        </nav>
+        
+        <!-- Mobile Sidebar Backdrop -->
+        <div id="sidebar-backdrop" class="fixed inset-0 bg-black bg-opacity-50 z-20 hidden md:hidden"></div>
+
+        <!-- Main Content -->
+        <main id="main-content" class="md:ml-64 transition-all duration-300 ease-in-out">
+            
+            <!-- Header -->
+            <header class="bg-white shadow-md p-4 flex items-center justify-between">
+                <!-- Mobile Menu Toggle -->
+                <button id="mobile-menu-toggle" class="md:hidden p-2 rounded-lg text-gray-600 hover:bg-gray-100">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path></svg>
+                </button>
+
+                <h1 class="text-xl font-semibold text-gray-700 ml-2 md:ml-0">Welcome, Admin</h1>
+                
+                <div class="flex items-center">
+                    <span id="admin-email" class="text-sm text-gray-600 hidden md:block mr-4"></span>
+                    <img src="https://placehold.co/40x40/15803d/FFFFFF?text=A" alt="Admin" class="w-10 h-10 rounded-full border-2 border-green-700">
+                </div>
+            </header>
+            
+            <!-- Page Content Area -->
+            <div class="p-6 md:p-8">
+                
+                <!-- 
+                  =================================
+                  PAGE: Dashboard
+                  =================================
+                -->
+                <section id="page-dashboard" class="page-content">
+                    <h2 class="text-3xl font-bold text-gray-800 mb-6">Dashboard Overview</h2>
+                    
+                    <!-- Stat Cards -->
+                    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                        <!-- Total Investors -->
+                        <div class="bg-white p-6 rounded-2xl shadow-lg border-l-8 border-green-700 flex items-center justify-between">
+                            <div>
+                                <div class="text-sm font-medium text-gray-500 uppercase tracking-wider">Total Investors</div>
+                                <div id="stat-total-investors" class="text-4xl font-extrabold text-gray-800">0</div>
+                            </div>
+                            <div class="text-green-700">
+                                <svg class="w-16 h-16 opacity-30" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M18 18.72a9.094 9.094 0 0 0 3.741-.479 3 3 0 0 0-4.682-2.72m.94 3.198.001.031c0 .225-.012.447-.037.666A11.944 11.944 0 0 1 12 21c-2.17 0-4.207-.576-5.963-1.584A9.065 9.065 0 0 1 12 15v-1.147A4.501 4.501 0 0 0 13.577 7.5H15M10.5 7.5H12M9 12h3M3 15v-1.147A4.5 4.5 0 0 1 6.423 7.5H9" /></svg>
+                            </div>
+                        </div>
+                        
+                        <!-- Total Funds Managed -->
+                        <div class="bg-white p-6 rounded-2xl shadow-lg border-l-8 border-yellow-600 flex items-center justify-between">
+                            <div>
+                                <div class="text-sm font-medium text-gray-500 uppercase tracking-wider">Total Funds Managed</div>
+                                <div id="stat-total-funds" class="text-4xl font-extrabold text-gray-800">$0.00</div>
+                            </div>
+                            <div class="text-yellow-600">
+                                <svg class="w-16 h-16 opacity-30" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M12 6v12m-3-2.818.879.659c1.171.879 3.07.879 4.242 0 1.172-.879 1.172-2.303 0-3.182C13.536 12.219 12.768 12 12 12c-.768 0-1.536.219-2.121.659-.922.69-1.42 1.76-1.42 2.863v.001Z" /></svg>
+                            </div>
+                        </div>
+                        
+                        <!-- Total ROI Distributed -->
+                        <div class="bg-white p-6 rounded-2xl shadow-lg border-l-8 border-blue-600 flex items-center justify-between">
+                            <div>
+                                <div class="text-sm font-medium text-gray-500 uppercase tracking-wider">Total ROI Distributed</div>
+                                <div id="stat-total-roi" class="text-4xl font-extrabold text-gray-800">$0.00</div>
+                            </div>
+                            <div class="text-blue-600">
+                                <svg class="w-16 h-16 opacity-30" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M2.25 18 9 11.25l4.306 4.306a11.95 11.95 0 0 1 5.814-5.518l2.74-1.22m0 0-5.94-2.281m5.94 2.28-2.28 5.941" /></svg>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Recent Transactions Preview -->
+                    <div class="mt-8 bg-white p-6 rounded-2xl shadow-lg">
+                        <h3 class="text-xl font-bold text-gray-800 mb-4">Recent System Transactions</h3>
+                        <div class="overflow-x-auto">
+                            <table class="w-full min-w-[600px] text-left">
+                                <thead>
+                                    <tr class="bg-gray-100 border-b border-gray-300">
+                                        <th class="py-3 px-4 text-sm font-semibold text-gray-600 uppercase">Date</th>
+                                        <th class="py-3 px-4 text-sm font-semibold text-gray-600 uppercase">Investor</th>
+                                        <th class="py-3 px-4 text-sm font-semibold text-gray-600 uppercase">Description</th>
+                                        <th class="py-3 px-4 text-sm font-semibold text-gray-600 uppercase">Amount</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="dashboard-transactions-table-body">
+                                    <!-- Rows will be injected by JS -->
+                                    <tr>
+                                        <td colspan="4" class="py-6 px-4 text-center text-gray-500">Loading recent transactions...</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </section>
+                
+                <!-- 
+                  =================================
+                  PAGE: Add Investor
+                  =================================
+                -->
+                <section id="page-add-investor" class="page-content hidden">
+                    <h2 class="text-3xl font-bold text-gray-800 mb-6">Create New Investor Profile</h2>
+                    
+                    <div class="bg-white p-8 rounded-2xl shadow-lg max-w-2xl mx-auto">
+                        <form id="add-investor-form">
+                            <!-- Full Name -->
+                            <div class="mb-4">
+                                <label for="investor-name" class="block text-sm font-medium text-gray-700 mb-1">Full Name</label>
+                                <input type="text" id="investor-name" required
+                                    class="w-full px-4 py-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-green-600 focus:border-transparent"
+                                    placeholder="John Doe">
+                            </div>
+                            
+                            <!-- Email -->
+                            <div class="mb-4">
+                                <label for="investor-email" class="block text-sm font-medium text-gray-700 mb-1">Email Address</label>
+                                <input type="email" id="investor-email" required
+                                    class="w-full px-4 py-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-green-600 focus:border-transparent"
+                                    placeholder="john.doe@example.com">
+                                <p class="text-xs text-gray-500 mt-1">This email will be used by the investor to log in to their client portal.</p>
+                            </div>
+                            
+                            <!-- Initial Investment -->
+                            <div class="mb-6">
+                                <label for="investor-investment" class="block text-sm font-medium text-gray-700 mb-1">Initial Investment Amount</label>
+                                <div class="relative">
+                                    <span class="absolute inset-y-0 left-0 pl-3 flex items-center text-gray-500">$</span>
+                                    <input type="number" id="investor-investment" min="0" step="100" required
+                                        class="w-full pl-7 pr-4 py-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-green-600 focus:border-transparent"
+                                        placeholder="5000">
+                                </div>
+                            </div>
+                            
+                            <!-- Create Button -->
+                            <button type="submit" id="add-investor-button"
+                                class="w-full btn-primary font-bold py-3 px-4 rounded-lg shadow-lg transform transition-transform hover:scale-105 focus:outline-none focus:ring-4 focus:ring-green-300 disabled:opacity-50">
+                                Create Investor Account
+                            </button>
+                        </form>
+                    </div>
+                </section>
+                
+                <!-- 
+                  =================================
+                  PAGE: Manage Investors
+                  =================================
+                -->
+                <section id="page-manage-investors" class="page-content hidden">
+                    <h2 class="text-3xl font-bold text-gray-800 mb-6">Manage Investors</h2>
+                    
+                    <div class="bg-white rounded-2xl shadow-lg overflow-hidden">
+                        <div class="overflow-x-auto">
+                            <table class="w-full min-w-[1000px] text-left">
+                                <thead>
+                                    <tr class="bg-gray-100 border-b border-gray-300">
+                                        <th class="py-3 px-4 text-sm font-semibold text-gray-600 uppercase">Name</th>
+                                        <th class="py-3 px-4 text-sm font-semibold text-gray-600 uppercase">Email</th>
+                                        <th class="py-3 px-4 text-sm font-semibold text-gray-600 uppercase">Current Balance</th>
+                                        <th class="py-3 px-4 text-sm font-semibold text-gray-600 uppercase">Total Funded</th>
+                                        <th class="py-3 px-4 text-sm font-semibold text-gray-600 uppercase">Total ROI</th>
+                                        <th class="py-3 px-4 text-sm font-semibold text-gray-600 uppercase text-center">Actions</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="manage-investors-table-body" class="divide-y divide-gray-200">
+                                    <!-- Rows will be injected by JS -->
+                                    <tr>
+                                        <td colspan="6" class="py-6 px-4 text-center text-gray-500">Loading investor data...</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </section>
+                
+                <!-- 
+                  =================================
+                  PAGE: Transactions / Logs
+                  =================================
+                -->
+                <section id="page-transactions" class="page-content hidden">
+                    <h2 class="text-3xl font-bold text-gray-800 mb-6">System-Wide Transaction Logs</h2>
+                    
+                    <div class="bg-white rounded-2xl shadow-lg overflow-hidden">
+                        <div class="overflow-x-auto">
+                            <table class="w-full min-w-[800px] text-left">
+                                <thead>
+                                    <tr class="bg-gray-100 border-b border-gray-300">
+                                        <th class="py-3 px-4 text-sm font-semibold text-gray-600 uppercase">Date</th>
+                                        <th class="py-3 px-4 text-sm font-semibold text-gray-600 uppercase">Investor</th>
+                                        <th class="py-3 px-4 text-sm font-semibold text-gray-600 uppercase">Description</th>
+                                        <th class="py-3 px-4 text-sm font-semibold text-gray-600 uppercase">Type</th>
+                                        <th class="py-3 px-4 text-sm font-semibold text-gray-600 uppercase">Amount</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="all-transactions-table-body" class="divide-y divide-gray-200">
+                                    <!-- Rows will be injected by JS -->
+                                    <tr>
+                                        <td colspan="5" class="py-6 px-4 text-center text-gray-500">Loading all transactions...</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </section>
+
+            </div>
+        </main>
+    </div>
+
+    <!-- 
+      =================================
+      MODALS
+      =================================
+    -->
+
+    <!-- Add Funds Modal -->
+    <div id="modal-add-funds" class="fixed inset-0 bg-black bg-opacity-70 flex items-center justify-center p-4 z-40 hidden">
+        <div class="bg-white p-8 rounded-2xl shadow-2xl w-full max-w-md" onclick="event.stopPropagation()">
+            <div class="flex justify-between items-center mb-4">
+                <h3 class="text-2xl font-bold text-gray-800">Add Funds</h3>
+                <button class="modal-close-btn text-gray-400 hover:text-gray-700">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
+                </button>
+            </div>
+            <p class="mb-4 text-gray-600">Adding funds for: <strong id="modal-add-funds-name" class="text-gray-900"></strong></p>
+            <form id="add-funds-form">
+                <label for="add-funds-amount" class="block text-sm font-medium text-gray-700 mb-1">Amount to Add</label>
+                <div class="relative">
+                    <span class="absolute inset-y-0 left-0 pl-3 flex items-center text-gray-500">$</span>
+                    <input type="number" id="add-funds-amount" min="0" step="100" required
+                        class="w-full pl-7 pr-4 py-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-green-600 focus:border-transparent"
+                        placeholder="1000">
+                </div>
+                <button type="submit" id="add-funds-submit-button" class="w-full btn-primary font-bold py-3 px-4 rounded-lg shadow-lg mt-6 disabled:opacity-50">
+                    Confirm & Add Funds
+                </button>
+            </form>
+        </div>
+    </div>
+    
+    <!-- Add ROI Modal -->
+    <div id="modal-add-roi" class="fixed inset-0 bg-black bg-opacity-70 flex items-center justify-center p-4 z-40 hidden">
+        <div class="bg-white p-8 rounded-2xl shadow-2xl w-full max-w-md" onclick="event.stopPropagation()">
+            <div class="flex justify-between items-center mb-4">
+                <h3 class="text-2xl font-bold text-gray-800">Add ROI</h3>
+                <button class="modal-close-btn text-gray-400 hover:text-gray-700">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
+                </button>
+            </div>
+            <p class="mb-4 text-gray-600">Adding ROI for: <strong id="modal-add-roi-name" class="text-gray-900"></strong></p>
+            <form id="add-roi-form">
+                <label for="add-roi-amount" class="block text-sm font-medium text-gray-700 mb-1">ROI Amount</label>
+                <div class="relative">
+                    <span class="absolute inset-y-0 left-0 pl-3 flex items-center text-gray-500">$</span>
+                    <input type="number" id="add-roi-amount" min="0" step="0.01" required
+                        class="w-full pl-7 pr-4 py-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-green-600 focus:border-transparent"
+                        placeholder="250.50">
+                </div>
+                <button type="submit" id="add-roi-submit-button" class="w-full btn-primary font-bold py-3 px-4 rounded-lg shadow-lg mt-6 disabled:opacity-50">
+                    Confirm & Add ROI
+                </button>
+            </form>
+        </div>
+    </div>
+
+    <!-- View Logs Modal -->
+    <div id="modal-view-logs" class="fixed inset-0 bg-black bg-opacity-70 flex items-center justify-center p-4 z-40 hidden">
+        <div class="bg-white p-8 rounded-2xl shadow-2xl w-full max-w-3xl" onclick="event.stopPropagation()">
+            <div class="flex justify-between items-center mb-6">
+                <div>
+                    <h3 class="text-2xl font-bold text-gray-800">Transaction History</h3>
+                    <p class="text-gray-600">For: <strong id="modal-view-logs-name" class="text-gray-900"></strong></p>
+                </div>
+                <button class="modal-close-btn text-gray-400 hover:text-gray-700">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
+                </button>
+            </div>
+            
+            <div class="max-h-[60vh] overflow-y-auto no-scrollbar rounded-lg border border-gray-200">
+                <table class="w-full min-w-[600px] text-left">
+                    <thead>
+                        <tr class="bg-gray-100 border-b border-gray-300">
+                            <th class="py-3 px-4 text-sm font-semibold text-gray-600 uppercase">Date</th>
+                            <th class="py-3 px-4 text-sm font-semibold text-gray-600 uppercase">Description</th>
+                            <th class="py-3 px-4 text-sm font-semibold text-gray-600 uppercase">Type</th>
+                            <th class="py-3 px-4 text-sm font-semibold text-gray-600 uppercase">Amount</th>
+                        </tr>
+                    </thead>
+                    <tbody id="modal-logs-table-body" class="divide-y divide-gray-200">
+                        <!-- User-specific logs will be injected here -->
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+
+    <!-- 
+      =================================
+      ALERT / TOAST NOTIFICATION
+      =================================
+    -->
+    <div id="alert-box" class="fixed top-6 right-6 w-full max-w-sm z-50 hidden">
+        <div id="alert-content" class="p-4 rounded-lg shadow-xl text-white">
+            <span id="alert-message"></span>
+        </div>
+    </div>
+
+    <!-- 
+      =================================
+      FIREBASE SDK & APP LOGIC
+      =================================
+    -->
+        <script type="module">
+        // Firebase SDK Imports (v9 Modular)
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
+        import { 
+            getAuth, 
+            onAuthStateChanged, 
+            signInWithEmailAndPassword, 
+            signOut 
+        } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
+        import { 
+            getFirestore, 
+            collection, 
+            doc, 
+            addDoc, 
+            setDoc, 
+            onSnapshot, 
+            query, 
+            orderBy, 
+            where, 
+            Timestamp, 
+            writeBatch,
+            serverTimestamp,
+            setLogLevel
+        } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
+
+        // --- IMPORTANT: Firebase Configuration ---
+        // PASTE YOUR FIREBASE CONFIG OBJECT HERE
+        // You get this from the Firebase Console when you add a Web App.
+        const firebaseConfig = {
+          apiKey: "AIzaSyDIO90MHmuV-LMDbIGeFTTl8gERtywmrcw",
+          authDomain: "profitease-9ac10.firebaseapp.com",
+          projectId: "profitease-9ac10",
+          storageBucket: "profitease-9ac10.firebasestorage.app",
+          messagingSenderId: "675034886547",
+          appId: "1:675034886547:web:a84da3093f10fbc0d9b866",
+          measurementId: "G-155NLSPN9Z"
+        };
+        
+        // --- IMPORTANT: App ID ---
+        // This MUST match the 'appId' you use in your Client Portal.
+        // For simplicity, we'll use a fixed string.
+        const appId = 'profitease-app'; // Make sure this matches your client portal's appId
+
+        // --- Firebase App Initialization ---
+        let app, auth, db;
+        try {
+            app = initializeApp(firebaseConfig);
+            auth = getAuth(app);
+            db = getFirestore(app);
+            setLogLevel('debug'); // Enable detailed Firestore logs
+        } catch (e) {
+            console.error("Failed to initialize Firebase:", e.message);
+            showAlert("Error initializing Firebase. Check console.", "error");
+        }
+
+        // --- Global State ---
+        let currentAdmin = null;
+        let allInvestors = [];
+        let allTransactions = [];
+        let selectedInvestor = null; // For modals
+        let unsubscribeInvestors = null; // To stop listener on logout
+        let unsubscribeTransactions = null; // To stop listener on logout
+
+        // --- DOM Element References ---
+        const loginContainer = document.getElementById('login-container');
+        const adminContainer = document.getElementById('admin-container');
+        const loginForm = document.getElementById('login-form');
+        const loginButton = document.getElementById('login-button');
+        const adminEmail = document.getElementById('admin-email');
+        const logoutButton = document.getElementById('logout-button');
+        
+        const sidebar = document.getElementById('sidebar');
+        const sidebarBackdrop = document.getElementById('sidebar-backdrop');
+        const mobileMenuToggle = document.getElementById('mobile-menu-toggle');
+        const sidebarLinks = document.querySelectorAll('.sidebar-link');
+        const pageContents = document.querySelectorAll('.page-content');
+
+        // Page Sections
+        const pageDashboard = document.getElementById('page-dashboard');
+        const pageAddInvestor = document.getElementById('page-add-investor');
+        const pageManageInvestors = document.getElementById('page-manage-investors');
+        const pageTransactions = document.getElementById('page-transactions');
+
+        // Dashboard Stats
+        const statTotalInvestors = document.getElementById('stat-total-investors');
+        const statTotalFunds = document.getElementById('stat-total-funds');
+        const statTotalRoi = document.getElementById('stat-total-roi');
+        const dashboardTransactionsTableBody = document.getElementById('dashboard-transactions-table-body');
+
+        // Add Investor Form
+        const addInvestorForm = document.getElementById('add-investor-form');
+        const addInvestorButton = document.getElementById('add-investor-button');
+
+        // Manage Investors Table
+        const manageInvestorsTableBody = document.getElementById('manage-investors-table-body');
+        
+        // All Transactions Table
+        const allTransactionsTableBody = document.getElementById('all-transactions-table-body');
+
+        // Modals
+        const modalAddFunds = document.getElementById('modal-add-funds');
+        const modalAddRoi = document.getElementById('modal-add-roi');
+        const modalViewLogs = document.getElementById('modal-view-logs');
+        const modalCloseBtns = document.querySelectorAll('.modal-close-btn');
+
+        // Modal Forms & Content
+        const addFundsForm = document.getElementById('add-funds-form');
+        const addFundsSubmitButton = document.getElementById('add-funds-submit-button');
+        const addRoiForm = document.getElementById('add-roi-form');
+        const addRoiSubmitButton = document.getElementById('add-roi-submit-button');
+        const modalLogsTableBody = document.getElementById('modal-logs-table-body');
+        
+        // Alert Box
+        const alertBox = document.getElementById('alert-box');
+        const alertContent = document.getElementById('alert-content');
+        const alertMessage = document.getElementById('alert-message');
+
+        // --- Utility Functions ---
+
+        /**
+         * Formats a number as USD currency.
+         * @param {number} num - The number to format.
+         * @returns {string} - Formatted currency string.
+         */
+        const formatCurrency = (num) => {
+            if (typeof num !== 'number') num = 0;
+            return num.toLocaleString('en-US', { style: 'currency', currency: 'USD' });
+        };
+        
+        /**
+         * Formats a Firebase Timestamp or Date object.
+         * @param {Timestamp | Date} ts - The timestamp to format.
+         * @returns {string} - Formatted date string.
+         */
+        const formatDate = (ts) => {
+            if (!ts) return 'N/A';
+            const date = ts.toDate ? ts.toDate() : (ts instanceof Date ? ts : new Date());
+            return date.toLocaleString();
+        };
+
+        /**
+         * Shows a success or error alert message.
+         * @param {string} message - The message to display.
+         * @param {'success' | 'error'} type - The type of alert.
+         */
+        const showAlert = (message, type = 'success') => {
+            console.log(`Alert (${type}):`, message);
+            alertMessage.textContent = message;
+            alertContent.className = 'p-4 rounded-lg shadow-xl text-white'; // Reset
+            if (type === 'success') {
+                alertContent.classList.add('bg-green-600');
+            } else {
+                alertContent.classList.add('bg-red-600');
+            }
+            alertBox.classList.remove('hidden');
+            
+            setTimeout(() => {
+                alertBox.classList.add('hidden');
+            }, 3000);
+        };
+        
+        /**
+         * Disables a form button and shows loading text.
+         * @param {HTMLButtonElement} button - The button element.
+         * @param {string} loadingText - Text to show while loading.
+         */
+        const setButtonLoading = (button, loadingText = "Processing...") => {
+            button.disabled = true;
+            button.dataset.originalText = button.innerHTML;
+            button.innerHTML = `
+                <svg class="animate-spin -ml-1 mr-3 h-5 w-5 text-white inline" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                  <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                  <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                </svg>
+                ${loadingText}
+            `;
+        };
+
+        /**
+         * Restores a form button to its original state.
+         * @param {HTMLButtonElement} button - The button element.
+         */
+        const resetButton = (button) => {
+            button.disabled = false;
+            if (button.dataset.originalText) {
+                button.innerHTML = button.dataset.originalText;
+            }
+        };
+
+        /**
+         * Switches the visible page in the main content area.
+         * @param {string} pageId - The ID of the page section to show.
+         */
+        const showPage = (pageId) => {
+            // Hide all pages
+            pageContents.forEach(page => page.classList.add('hidden'));
+            
+            // Show the target page
+            const targetPage = document.getElementById(pageId);
+            if (targetPage) {
+                targetPage.classList.remove('hidden');
+            } else {
+                console.warn(`Page with ID "${pageId}" not found. Defaulting to dashboard.`);
+                pageDashboard.classList.remove('hidden');
+                pageId = 'page-dashboard'; // Fix for active link
+            }
+            
+            // Update active sidebar link
+            sidebarLinks.forEach(link => {
+                if (link.dataset.page === pageId) {
+                    link.classList.add('active');
+                } else {
+                    link.classList.remove('active');
+                }
+            });
+
+            // Close mobile sidebar if open
+            sidebar.classList.add('-translate-x-full');
+            sidebarBackdrop.classList.add('hidden');
+        };
+
+        /**
+         * Closes all open modals.
+         */
+        const closeModals = () => {
+            modalAddFunds.classList.add('hidden');
+            modalAddRoi.classList.add('hidden');
+            modalViewLogs.classList.add('hidden');
+            
+            // Reset forms
+            addFundsForm.reset();
+            addRoiForm.reset();
+            
+            // Clear modal content
+            modalLogsTableBody.innerHTML = '';
+            
+            // Clear selected investor
+            selectedInvestor = null;
+        };
+
+        // --- Core App Logic & Auth ---
+
+        /**
+         * Main authentication state listener.
+         * Controls UI between login and dashboard.
+         */
+        onAuthStateChanged(auth, (user) => {
+            if (user) {
+                // Admin is logged in
+                currentAdmin = user;
+                adminEmail.textContent = user.email;
+                loginContainer.classList.add('hidden');
+                adminContainer.classList.remove('hidden');
+                
+                // Start listening to data
+                initDashboardListeners();
+                
+                // Default to dashboard page
+                showPage('page-dashboard');
+
+            } else {
+                // Admin is logged out
+                currentAdmin = null;
+                loginContainer.classList.remove('hidden');
+                adminContainer.classList.add('hidden');
+                
+                // Stop listening to data
+                if (unsubscribeInvestors) unsubscribeInvestors();
+                if (unsubscribeTransactions) unsubscribeTransactions();
+                
+                // Clear local data
+                allInvestors = [];
+                allTransactions = [];
+            }
+        });
+
+        /**
+         * Handles the admin login form submission.
+         */
+        const handleLogin = async (e) => {
+            e.preventDefault();
+            setButtonLoading(loginButton, "Logging in...");
+            
+            const usernameInput = loginForm.username.value;
+            const password = loginForm.password.value;
+            
+            // FIX: Handle the "Fesh641" username alias.
+            // Firebase signIn requires a valid email. We'll assume "Fesh641" is an
+            // alias for the admin email, which we can guess from the placeholder.
+            // If the input isn't "Fesh641", we'll assume the user typed a valid email.
+            const emailToLogin = (usernameInput === 'Fesh641') ? 'admin@profitease.com' : usernameInput;
+
+            try {
+                await signInWithEmailAndPassword(auth, emailToLogin, password);
+                // onAuthStateChanged will handle the UI switch
+                showAlert("Login successful. Welcome!", "success");
+            } catch (error) {
+                console.error("Login Error:", error.code, error.message);
+                showAlert(`Login Failed: ${error.message}`, "error");
+            } finally {
+                resetButton(loginButton);
+            }
+        };
+        
+        /**
+         * Handles the admin logout.
+         */
+        const handleLogout = async () => {
+            try {
+                await signOut(auth);
+                // onAuthStateChanged will handle the UI switch
+                showAlert("You have been logged out.", "success");
+            } catch (error) {
+                console.error("Logout Error:", error.message);
+                showAlert(`Logout Failed: ${error.message}`, "error");
+            }
+        };
+
+        // --- Firestore Data Listeners ---
+
+        /**
+         * Initializes all real-time Firestore snapshot listeners.
+         * This is called after a successful login.
+         */
+        const initDashboardListeners = () => {
+            if (!db) return;
+
+            // Detach old listeners if they exist
+            if (unsubscribeInvestors) unsubscribeInvestors();
+            if (unsubscribeTransactions) unsubscribeTransactions();
+
+            // 1. Investor (Users) Listener
+            try {
+                const usersCol = collection(db, 'artifacts', appId, 'public/data/users');
+                const usersQuery = query(usersCol, orderBy('createdAt', 'desc'));
+
+                unsubscribeInvestors = onSnapshot(usersQuery, (snapshot) => {
+                    allInvestors = snapshot.docs.map(doc => ({
+                        id: doc.id,
+                        ...doc.data()
+                    }));
+                    
+                    // Re-render all components that use this data
+                    renderDashboardStats();
+                    renderManageInvestorsTable();
+
+                }, (error) => {
+                    console.error("Error listening to investors:", error);
+                    showAlert("Failed to load investor data.", "error");
+                });
+            } catch (e) {
+                console.error("Error setting up investors listener:", e);
+                showAlert("Error setting up investors listener.", "error");
+            }
+            
+            // 2. Transactions Listener
+            try {
+                const txCol = collection(db, 'artifacts', appId, 'public/data/transactions');
+                const txQuery = query(txCol, orderBy('date', 'desc'));
+                
+                unsubscribeTransactions = onSnapshot(txQuery, (snapshot) => {
+                    allTransactions = snapshot.docs.map(doc => ({
+                        id: doc.id,
+                        ...doc.data()
+                    }));
+
+                    // Re-render all components that use this data
+                    renderDashboardTransactions();
+                    renderAllTransactionsTable();
+                    
+                    // If log modal is open, refresh it
+                    if (selectedInvestor && !modalViewLogs.classList.contains('hidden')) {
+                        renderUserLogsModal(selectedInvestor.id);
+                    }
+
+                }, (error) => {
+                    console.error("Error listening to transactions:", error);
+                    showAlert("Failed to load transaction data.", "error");
+                });
+            } catch (e) {
+                console.error("Error setting up transactions listener:", e);
+                showAlert("Error setting up transactions listener.", "error");
+            }
+        };
+        
+        // --- Rendering Functions ---
+
+        /**
+         * Updates the stat cards on the dashboard.
+         */
+        const renderDashboardStats = () => {
+            statTotalInvestors.textContent = allInvestors.length;
+            
+            const totalFunds = allInvestors.reduce((acc, user) => acc + (user.totalFunded || 0), 0);
+            statTotalFunds.textContent = formatCurrency(totalFunds);
+            
+            const totalRoi = allInvestors.reduce((acc, user) => acc + (user.totalROI || 0), 0);
+            statTotalRoi.textContent = formatCurrency(totalRoi);
+        };
+
+        /**
+         * Renders the recent transactions table on the dashboard (first 5).
+         */
+        const renderDashboardTransactions = () => {
+            const recentTxs = allTransactions.slice(0, 5);
+            if (recentTxs.length === 0) {
+                dashboardTransactionsTableBody.innerHTML = `
+                    <tr><td colspan="4" class="py-6 px-4 text-center text-gray-500">No transactions found.</td></tr>
+                `;
+                return;
+            }
+
+            dashboardTransactionsTableBody.innerHTML = recentTxs.map(tx => `
+                <tr class="hover:bg-gray-50">
+                    <td class="py-3 px-4 text-sm text-gray-700">${formatDate(tx.date)}</td>
+                    <td class="py-3 px-4 text-sm text-gray-700">${tx.userName || 'N/A'}</td>
+                    <td class="py-3 px-4 text-sm text-gray-700">${tx.description}</td>
+                    <td class="py-3 px-4 text-sm font-medium ${tx.amount >= 0 ? 'text-green-600' : 'text-red-600'}">
+                        ${formatCurrency(tx.amount)}
+                    </td>
+                </tr>
+            `).join('');
+        };
+        
+        /**
+         * Renders the full table on the "Manage Investors" page.
+         */
+        const renderManageInvestorsTable = () => {
+            if (allInvestors.length === 0) {
+                manageInvestorsTableBody.innerHTML = `
+                    <tr><td colspan="6" class="py-6 px-4 text-center text-gray-500">No investors found. Add one to get started!</td></tr>
+                `;
+                return;
+            }
+            
+            manageInvestorsTableBody.innerHTML = allInvestors.map(user => `
+                <tr class="hover:bg-gray-50">
+                    <td class="py-4 px-4 text-sm font-medium text-gray-900">${user.fullName}</td>
+                    <td class="py-4 px-4 text-sm text-gray-600">${user.email}</td>
+                    <td class="py-4 px-4 text-sm font-bold text-green-700">${formatCurrency(user.currentBalance)}</td>
+                    <td class="py-4 px-4 text-sm text-gray-600">${formatCurrency(user.totalFunded)}</td>
+                    <td class="py-4 px-4 text-sm text-gray-600">${formatCurrency(user.totalROI)}</td>
+                    <td class="py-4 px-4 text-sm text-center space-x-2">
+                        <button class="btn-primary text-xs font-bold py-2 px-3 rounded-md" data-id="${user.id}" data-action="add-funds">
+                            Add Funds
+                        </button>
+                        <button class="btn-secondary text-xs font-bold py-2 px-3 rounded-md" data-id="${user.id}" data-action="add-roi">
+                            Add ROI
+                        </button>
+                        <button class="bg-gray-600 hover:bg-gray-700 text-white text-xs font-bold py-2 px-3 rounded-md" data-id="${user.id}" data-action="view-logs">
+                            View Logs
+                        </button>
+                    </td>
+                </tr>
+            `).join('');
+        };
+        
+        /**
+         * Renders the full table on the "Transactions / Logs" page.
+         */
+        const renderAllTransactionsTable = () => {
+            if (allTransactions.length === 0) {
+                allTransactionsTableBody.innerHTML = `
+                    <tr><td colspan="5" class="py-6 px-4 text-center text-gray-500">No transactions found.</td></tr>
+                `;
+                return;
+            }
+            
+            allTransactionsTableBody.innerHTML = allTransactions.map(tx => `
+                <tr class="hover:bg-gray-50">
+                    <td class="py-3 px-4 text-sm text-gray-700">${formatDate(tx.date)}</td>
+                    <td class="py-3 px-4 text-sm font-medium text-gray-900">${tx.userName || 'N/A'}</td>
+                    <td class="py-3 px-4 text-sm text-gray-700">${tx.description}</td>
+                    <td class="py-3 px-4 text-sm text-gray-700">
+                        <span class="px-2 py-1 text-xs font-medium rounded-full ${
+                            tx.type === 'ROI' ? 'bg-blue-100 text-blue-800' : 
+                            tx.type === 'Funding' ? 'bg-green-100 text-green-800' : 
+                            tx.type === 'Initial' ? 'bg-yellow-100 text-yellow-800' : 
+                            'bg-gray-100 text-gray-800'
+                        }">
+                            ${tx.type}
+                        </span>
+                    </td>
+                    <td class="py-3 px-4 text-sm font-medium ${tx.amount >= 0 ? 'text-green-600' : 'text-red-600'}">
+                        ${formatCurrency(tx.amount)}
+                    </td>
+                </tr>
+            `).join('');
+        };
+
+        /**
+         * Renders the transaction logs for a *specific user* inside the modal.
+         * @param {string} userId - The ID of the user to filter logs for.
+         */
+        const renderUserLogsModal = (userId) => {
+            const userTxs = allTransactions.filter(tx => tx.userId === userId);
+            
+            if (userTxs.length === 0) {
+                modalLogsTableBody.innerHTML = `
+                    <tr><td colspan="4" class="py-6 px-4 text-center text-gray-500">No transactions found for this user.</td></tr>
+                `;
+                return;
+            }
+            
+            modalLogsTableBody.innerHTML = userTxs.map(tx => `
+                <tr class="hover:bg-gray-50">
+                    <td class="py-3 px-4 text-sm text-gray-700">${formatDate(tx.date)}</td>
+                    <td class="py-3 px-4 text-sm text-gray-700">${tx.description}</td>
+                    <td class="py-3 px-4 text-sm text-gray-700">
+                        <span class="px-2 py-1 text-xs font-medium rounded-full ${
+                            tx.type === 'ROI' ? 'bg-blue-100 text-blue-800' : 
+                            tx.type === 'Funding' ? 'bg-green-100 text-green-800' : 
+                            'bg-gray-100 text-gray-800'
+                        }">
+                            ${tx.type}
+                        </span>
+                    </td>
+                    <td class="py-3 px-4 text-sm font-medium ${tx.amount >= 0 ? 'text-green-600' : 'text-red-600'}">
+                        ${formatCurrency(tx.amount)}
+                    </td>
+                </tr>
+            `).join('');
+        };
+        
+        // --- Firestore Write Functions ---
+
+        /**
+         * Handles the "Add Investor" form submission.
+         * Creates a new user doc and an initial transaction doc.
+         */
+        const handleAddInvestor = async (e) => {
+            e.preventDefault();
+            setButtonLoading(addInvestorButton, "Creating Account...");
+
+            const name = addInvestorForm['investor-name'].value;
+            const email = addInvestorForm['investor-email'].value;
+            const initialInvestment = parseFloat(addInvestorForm['investor-investment'].value);
+
+            if (isNaN(initialInvestment) || initialInvestment < 0) {
+                showAlert("Invalid investment amount.", "error");
+                resetButton(addInvestorButton);
+                return;
+            }
+
+            try {
+                // Use a write batch to create user and initial transaction atomically
+                const batch = writeBatch(db);
+                
+                // 1. Create the new user doc
+                const usersCol = collection(db, 'artifacts', appId, 'public/data/users');
+                const newUserRef = doc(usersCol); // Generate a new doc ID
+                
+                const newUserData = {
+                    uid: newUserRef.id, // Save the doc ID as the uid
+                    fullName: name,
+                    email: email,
+                    currentBalance: initialInvestment,
+                    totalFunded: initialInvestment,
+                    totalROI: 0,
+                    createdAt: serverTimestamp() // Use server timestamp
+                };
+                batch.set(newUserRef, newUserData);
+
+                // 2. Create the initial transaction doc
+                const txCol = collection(db, 'artifacts', appId, 'public/data/transactions');
+                const newTxRef = doc(txCol); // Generate new tx ID
+                
+                const newTxData = {
+                    userId: newUserRef.id,
+                    userName: name,
+                    date: serverTimestamp(),
+                    description: "Initial investment by admin setup",
+                    amount: initialInvestment,
+                    type: "Initial"
+                };
+                batch.set(newTxRef, newTxData);
+                
+                // 3. Commit the batch
+                await batch.commit();
+                
+                showAlert("Investor account created successfully!", "success");
+                addInvestorForm.reset();
+                showPage('page-manage-investors'); // Switch to manage page
+
+            } catch (error) {
+                console.error("Error creating investor:", error);
+                showAlert(`Failed to create investor: ${error.message}`, "error");
+            } finally {
+                resetButton(addInvestorButton);
+            }
+        };
+        
+        /**
+         * Handles clicks on the "Manage Investors" table (delegated).
+         * Opens the correct modal.
+         */
+        const handleManageInvestorsClick = (e) => {
+            const button = e.target.closest('button');
+            if (!button) return;
+            
+            const action = button.dataset.action;
+            const userId = button.dataset.id;
+            
+            selectedInvestor = allInvestors.find(inv => inv.id === userId);
+            if (!selectedInvestor) {
+                console.error("Could not find investor data for ID:", userId);
+                showAlert("Error: Could not find investor data.", "error");
+                return;
+            }
+
+            switch (action) {
+                case 'add-funds':
+                    document.getElementById('modal-add-funds-name').textContent = selectedInvestor.fullName;
+                    modalAddFunds.classList.remove('hidden');
+                    break;
+                case 'add-roi':
+                    document.getElementById('modal-add-roi-name').textContent = selectedInvestor.fullName;
+                    modalAddRoi.classList.remove('hidden');
+                    break;
+                case 'view-logs':
+                    document.getElementById('modal-view-logs-name').textContent = selectedInvestor.fullName;
+                    renderUserLogsModal(selectedInvestor.id);
+                    modalViewLogs.classList.remove('hidden');
+                    break;
+            }
+        };
+
+        /**
+         * Handles the "Add Funds" modal form submission.
+         */
+        const handleAddFunds = async (e) => {
+            e.preventDefault();
+            if (!selectedInvestor) return;
+            
+            setButtonLoading(addFundsSubmitButton, "Processing...");
+            const amount = parseFloat(addFundsForm['add-funds-amount'].value);
+            
+            if (isNaN(amount) || amount <= 0) {
+                showAlert("Invalid amount.", "error");
+                resetButton(addFundsSubmitButton);
+                return;
+            }
+            
+            try {
+                const batch = writeBatch(db);
+                
+                // 1. Update user document
+                const userDocRef = doc(db, 'artifacts', appId, 'public/data/users', selectedInvestor.id);
+                const newBalance = selectedInvestor.currentBalance + amount;
+                const newTotalFunded = selectedInvestor.totalFunded + amount;
+                batch.update(userDocRef, {
+                    currentBalance: newBalance,
+                    totalFunded: newTotalFunded
+                });
+                
+                // 2. Create transaction log
+                const txColRef = collection(db, 'artifacts', appId, 'public/data/transactions');
+                const newTxRef = doc(txColRef);
+                batch.set(newTxRef, {
+                    userId: selectedInvestor.id,
+                    userName: selectedInvestor.fullName,
+                    date: serverTimestamp(),
+                    description: `Account funded by admin`,
+                    amount: amount,
+                    type: "Funding"
+                });
+                
+                // 3. Commit
+                await batch.commit();
+                
+                showAlert(`Successfully added ${formatCurrency(amount)} to ${selectedInvestor.fullName}'s account.`, "success");
+                closeModals();
+                
+            } catch (error) {
+                console.error("Error adding funds:", error);
+                showAlert(`Failed to add funds: ${error.message}`, "error");
+            } finally {
+                resetButton(addFundsSubmitButton);
+            }
+        };
+
+        /**
+         * Handles the "Add ROI" modal form submission.
+         */
+        const handleAddRoi = async (e) => {
+            e.preventDefault();
+            if (!selectedInvestor) return;
+            
+            setButtonLoading(addRoiSubmitButton, "Processing...");
+            const amount = parseFloat(addRoiForm['add-roi-amount'].value);
+            
+            if (isNaN(amount) || amount <= 0) {
+                showAlert("Invalid amount.", "error");
+                resetButton(addRoiSubmitButton);
+                return;
+            }
+
+            try {
+                const batch = writeBatch(db);
+                
+                // 1. Update user document
+                const userDocRef = doc(db, 'artifacts', appId, 'public/data/users', selectedInvestor.id);
+                const newBalance = selectedInvestor.currentBalance + amount;
+                const newTotalROI = selectedInvestor.totalROI + amount;
+                batch.update(userDocRef, {
+                    currentBalance: newBalance,
+                    totalROI: newTotalROI
+                });
+                
+                // 2. Create transaction log
+                const txColRef = collection(db, 'artifacts', appId, 'public/data/transactions');
+                const newTxRef = doc(txColRef);
+                batch.set(newTxRef, {
+                    userId: selectedInvestor.id,
+                    userName: selectedInvestor.fullName,
+                    date: serverTimestamp(),
+                    description: `ROI added by admin`,
+                    amount: amount,
+                    type: "ROI"
+                });
+                
+                // 3. Commit
+                await batch.commit();
+                
+                showAlert(`Successfully added ${formatCurrency(amount)} ROI to ${selectedInvestor.fullName}'s account.`, "success");
+                closeModals();
+                
+            } catch (error) {
+                console.error("Error adding ROI:", error);
+                showAlert(`Failed to add ROI: ${error.message}`, "error");
+            } finally {
+                resetButton(addRoiSubmitButton);
+            }
+        };
+
+        // --- Event Listeners ---
+        
+        // Auth
+        loginForm.addEventListener('submit', handleLogin);
+        logoutButton.addEventListener('click', handleLogout);
+        
+        // Page Navigation
+        sidebarLinks.forEach(link => {
+            link.addEventListener('click', (e) => {
+                e.preventDefault();
+                showPage(link.dataset.page);
+            });
+        });
+
+        // Mobile Sidebar Toggle
+        mobileMenuToggle.addEventListener('click', () => {
+            sidebar.classList.toggle('-translate-x-full');
+            sidebarBackdrop.classList.toggle('hidden');
+        });
+        sidebarBackdrop.addEventListener('click', () => {
+            sidebar.classList.add('-translate-x-full');
+            sidebarBackdrop.classList.add('hidden');
+        });
+        
+        // Forms
+        addInvestorForm.addEventListener('submit', handleAddInvestor);
+        
+        // Modal Actions
+        manageInvestorsTableBody.addEventListener('click', handleManageInvestorsClick);
+        modalCloseBtns.forEach(btn => btn.addEventListener('click', closeModals));
+        addFundsForm.addEventListener('submit', handleAddFunds);
+        addRoiForm.addEventListener('submit', handleAddRoi);
+        
+        // Close modal on backdrop click
+        modalAddFunds.addEventListener('click', closeModals);
+        modalAddRoi.addEventListener('click', closeModals);
+        modalViewLogs.addEventListener('click', closeModals);
+
+    </script>
+</body>
+</html>
+
+
+
+
+
+
